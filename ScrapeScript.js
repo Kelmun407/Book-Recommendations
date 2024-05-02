@@ -23,27 +23,14 @@ async function scrapeBestSellers() {
         const imgElements = await driver.findElements(By.css('.css-35otwa'));
         console.log("Number of img elements found:", imgElements.length);
 
-        const descElements = await driver.findElements(By.css('.css-5yxv3r'));  
-        if (descElements.length === 0) {
-            console.error('No description elements found.');
-            return;
-        }      
-        // console.log("Number of description elements found:", descElements.length);
-        // await driver.wait(until.elementIsVisible(descElements[0]), 10000);
-
- //Extract text from elements and store in arrays
+        const descElements = await driver.findElements(By.css('.css-5yxv3r'));              
+        console.log("Number of description elements found:", descElements.length);           
+ 
         const titles = await Promise.all(titleElements.map(async (element) => await element.getText()));
         const authors = await Promise.all(authorElements.map(async (element) => await element.getText()));
         const imgs = await Promise.all(imgElements.map(async (element) => await element.getAttribute('src')));
-        const descs = await Promise.all(descElements.map(async (element) => {
-            try {
-                await driver.wait(until.elementIsVisible(element), 10000); // Wait for element to become visible
-                return await element.getText();
-            } catch (error) {
-                console.error('Error occurred while getting description text:', error);
-                return ''; // Return empty string if error occurs
-            }
-        }));
+        const descs = await Promise.all(descElements.map(async (element) => await element.getAttribute('innerHTML')));
+            
  //Combine arrays into a structured format
         const bestSellers = titles.map((title, index) => ({
         title: title,
