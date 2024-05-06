@@ -66,6 +66,7 @@
                     return response.json();
                 })
                 .then(data => {
+                    console.log(data);
                     const randomIndex = Math.floor(Math.random() * data.length);
                     const randomBook = data[randomIndex];
                     displayBook(randomBook);
@@ -80,8 +81,7 @@
             bookCard.querySelector('.book-description').textContent = book.description;
         }
 
-        // Display a random book initially on page load
-        getRandomBook();
+        getRandomBook();            
     </script>
 </body>
 </html>
