@@ -1,7 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 const Chrome = require('selenium-webdriver/chrome');
 const sqlite3 = require('sqlite3').verbose();
-//const fs = require('fs'); 
 
 const options = new Chrome.Options();
 options.addArguments('--headless');
@@ -27,10 +26,8 @@ async function scrapeBestSellers() {
         const descElements = await driver.findElements(By.css('.css-5yxv3r'));              
         console.log("Number of description elements found:", descElements.length);         
  
-         // Initialize SQLite database
          const db = new sqlite3.Database('books.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE);
 
-         // Create a new table named "books"
          db.run(`CREATE TABLE IF NOT EXISTS books (
              id INTEGER PRIMARY KEY,
              title TEXT,
@@ -39,7 +36,6 @@ async function scrapeBestSellers() {
              description TEXT
          )`);
  
-         // Insert data into the "books" table
          const stmt = db.prepare(`INSERT INTO books (title, author, img, description) VALUES (?, ?, ?, ?)`);
          for (let i = 0; i < titleElements.length; i++) {
              const title = await titleElements[i].getText();
@@ -48,7 +44,6 @@ async function scrapeBestSellers() {
              const description = await descElements[i].getAttribute('innerHTML'); 
              stmt.run(title, author, img, description);
 
-          // Check if the same record exists in the database
           const existingRecord = await new Promise((resolve, reject) => {
             db.get(`SELECT * FROM books WHERE title = ? AND author = ? AND img = ? AND description = ?`, [title, author, img, description], (err, row) => {
                 if (err) reject(err);
@@ -56,7 +51,6 @@ async function scrapeBestSellers() {
             });
         });
 
-        // If the record does not exist, insert it into the database
             if (!existingRecord) {
                 stmt.run(title, author, img, description);
             } else {

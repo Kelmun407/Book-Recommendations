@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .book-card {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        .book-info {
+            flex: 1;
+            padding-left: 20px;
+        }
+        .book-title {
+            font-size: 24px;
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .book-author {
+            font-style: italic;
+            color: #666;
+            margin: 0 0 10px;
+        }
+        .book-description {
+            margin: 0;
+            color: #777;
+        }
+        .book-img {
+            max-width: 150px; 
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+        }
+        .author-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .author-button:hover {
+            background-color: #45a049;
+        }    
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="book-card" id="bookCard">
+            <img class="book-img" src="" alt="Book Image">
+            <div class="book-info">
+                <h2 class="book-title">Book Title</h2>
+                <p class="book-author">Author Name</p>
+                <p class="book-description">Book Description</p>
+                <button class="author-button"
+                onclick="findAuthorInfo('Author Name')">About the Author</button>
+            </div>
+        </div>
+        <button class="btn" onclick="getRandomBook()">Get Another Recommendation</button>
+    </div>
+
+    <script>
+         function getRandomBook() {
+            fetch('http://localhost:3000/api/books')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {                    
+                    const randomIndex = Math.floor(Math.random() * data.length);
+                    const randomBook = data[randomIndex];
+                    displayBook(randomBook);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function displayBook(book) {
+            const bookCard = document.getElementById('bookCard');
+            bookCard.querySelector('.book-title').textContent = book.title;
+            bookCard.querySelector('.book-author').textContent = book.author;
+            bookCard.querySelector('.book-description').textContent = book.description;
+            bookCard.querySelector('.book-img').src = book.img;
+
+            const authorName = extractAuthorName(book.author);
+            document.querySelector('.author-button').setAttribute('onclick', `findAuthorInfo('${authorName}')`);
+        }
+
+        function findAuthorInfo(authorName) {
+            const wikipediaUrl = 'https://en.wikipedia.org/wiki/' + encodeURI(authorName);
+            window.open(wikipediaUrl, '_blank');           
+        }
+
+        function extractAuthorName(author) {
+            const words = author.split(' ');
+            const byIndex = words.findIndex(word => word.toLowerCase() === 'by');
+            if (byIndex !== -1 && byIndex + 2 < words.length) {
+                return words.slice(byIndex + 1, byIndex + 3).join('_');
+            } else {
+                return author.replace(/\s/g, '_').toLowerCase();
+            }
+        }
+
+        getRandomBook();            
+    </script>
+</body>
+</html>

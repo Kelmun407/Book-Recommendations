@@ -24,6 +24,7 @@
         .book-title {
             font-size: 24px;
             margin-bottom: 10px;
+            color: #333;
         }
         .book-author {
             font-style: italic;
@@ -32,6 +33,14 @@
         }
         .book-description {
             margin-bottom: 20px;
+            color: #777;
+        }
+        .book-img {
+            max-width: 100%; 
+            height: auto; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added box shadow */
         }
         .btn {
             background-color: #007bff;
@@ -39,7 +48,8 @@
             border: none;
             border-radius: 4px;
             padding: 10px 20px;
-            cursor: pointer;
+            cursor: pointer;    
+            transition: background-color 0.3s; /* Added transition */        
         }
         .btn:hover {
             background-color: #0056b3;
@@ -49,7 +59,9 @@
 <body>
     <div class="container">
         <div class="book-card" id="bookCard">
-            <h2 class="book-title">Book Title</h2>
+            <img class="book-img" src="" alt="Book Image">
+        <div class="book-info">
+            <h2 class="book-title">Book Title</h2>            
             <p class="book-author">Author Name</p>
             <p class="book-description">Book Description</p>
         </div>
@@ -58,15 +70,14 @@
 
     <script>
          function getRandomBook() {
-            fetch('/api/books')
+            fetch('http://localhost:3000/api/books')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
                     return response.json();
                 })
-                .then(data => {
-                    console.log(data);
+                .then(data => {                    
                     const randomIndex = Math.floor(Math.random() * data.length);
                     const randomBook = data[randomIndex];
                     displayBook(randomBook);
@@ -79,6 +90,7 @@
             bookCard.querySelector('.book-title').textContent = book.title;
             bookCard.querySelector('.book-author').textContent = book.author;
             bookCard.querySelector('.book-description').textContent = book.description;
+            bookCard.querySelector('.book-img').src = book.img;
         }
 
         getRandomBook();            
