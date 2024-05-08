@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Book Recommendations!</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://images.pexels.com/photos/267586/pexels-photo-267586.jpeg?cs=srgb&dl=pexels-pixabay-267586.jpg&fm=jpg'); /* Replace with the URL of your book background image */
+            background-size: cover;
+            background-position: top;
+            background-repeat: no-repeat;
+            color: #333;
+            background-color: #cc5200;            
+        }
+
+        .intro-container {
+            text-align: center;
+            padding: 20px;
+            color: #fafafa;
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);           
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .start-button {
+            background-color: #fff;
+            color: #ff6600;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-button:hover {
+            background-color: #cc5200;
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-container">
+        <h1>Welcome to the World of Books!</h1>
+        <p>Are you tired of staring at your bookshelf, wondering what to read next?</p>
+        <p>Fear not! We're here to rescue you from the depths of literary indecision!</p>
+        <p>Each week, we'll handpick the finest literary treasures and present them to
+        you with all the flair of a seasoned book sommelier.</p>
+        <button class="start-button" onclick="redirectToRecommendations()">Find Your Next Read!</button>
+    </div>
+
+    <script>
+        function redirectToRecommendations() {
+            window.location.href = "books_index.html"; 
+        }
+    </script>
+</body>
+</html>

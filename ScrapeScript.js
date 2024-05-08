@@ -8,6 +8,8 @@ options.addArguments('--headless');
 const driver = new Builder().forBrowser('chrome').setChromeOptions(options).build();
 
 async function scrapeBestSellers() {
+    let db = new sqlite3.Database('books.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE);
+
     try {
         await driver.get('https://www.nytimes.com/books/best-sellers/');
 
@@ -15,56 +17,47 @@ async function scrapeBestSellers() {
         console.log(await driver.getTitle());
 
         const titleElements = await driver.findElements(By.css('.css-i1z3c1'));
-        console.log("Number of title elements found:", titleElements.length);
-
         const authorElements = await driver.findElements(By.css('.css-1nxjbfc'));
-        console.log("Number of author elements found:", authorElements.length);
-
         const imgElements = await driver.findElements(By.css('.css-35otwa'));
-        console.log("Number of img elements found:", imgElements.length);
+        const descElements = await driver.findElements(By.css('.css-5yxv3r'));         
+        const buyElements = await driver.findElements(By.css('li:nth-child(5) > .css-114t425'));
+        
+        await new Promise((resolve, reject) => {
+            db.serialize(async function () {
+                db.run("DROP TABLE IF EXISTS books");
+                db.run(`CREATE TABLE books (
+                    id INTEGER PRIMARY KEY,
+                    title TEXT,
+                    author TEXT,
+                    img TEXT,
+                    description TEXT,
+                    buy TEXT            
+                )`);
 
-        const descElements = await driver.findElements(By.css('.css-5yxv3r'));              
-        console.log("Number of description elements found:", descElements.length);         
- 
-         const db = new sqlite3.Database('books.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE);
+                const stmt = db.prepare(`INSERT INTO books (title, author, img, description, buy) VALUES (?, ?, ?, ?, ?)`);
+                for (let i = 0; i < titleElements.length; i++) {
+                    const title = titleElements[i] ? await titleElements[i].getText() : null;
+                    const author = authorElements[i] ? await authorElements[i].getText() : null;
+                    const img = imgElements[i] ? await imgElements[i].getAttribute('src') : null;
+                    const description = descElements[i] ? await descElements[i].getAttribute('innerHTML') : null;
+                    const buy = buyElements[i] ? await buyElements[i].getAttribute('href') : null;
 
-         db.run(`CREATE TABLE IF NOT EXISTS books (
-             id INTEGER PRIMARY KEY,
-             title TEXT,
-             author TEXT,
-             img TEXT,
-             description TEXT
-         )`);
- 
-         const stmt = db.prepare(`INSERT INTO books (title, author, img, description) VALUES (?, ?, ?, ?)`);
-         for (let i = 0; i < titleElements.length; i++) {
-             const title = await titleElements[i].getText();
-             const author = await authorElements[i].getText();
-             const img = await imgElements[i].getAttribute('src');
-             const description = await descElements[i].getAttribute('innerHTML'); 
-             stmt.run(title, author, img, description);
+                    stmt.run(title, author, img, description, buy);
+                }
 
-          const existingRecord = await new Promise((resolve, reject) => {
-            db.get(`SELECT * FROM books WHERE title = ? AND author = ? AND img = ? AND description = ?`, [title, author, img, description], (err, row) => {
-                if (err) reject(err);
-                resolve(row);
+                stmt.finalize();
+                resolve();
             });
         });
 
-            if (!existingRecord) {
-                stmt.run(title, author, img, description);
-            } else {
-                console.log(`Skipping duplicate record: ${title} - ${author}`);
-            }
-         }
-         stmt.finalize();
- 
+         
          console.log("Data saved to SQLite database.");
-
+         
     } catch (error) {
         console.error('Error:', error);
     }finally {
         await driver.quit();
+        db.close();
         
     }
 };

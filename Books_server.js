@@ -17,25 +17,8 @@ app.get('/api/books', (req, res) => {
             console.log('Fetched books:', rows);
             res.json(rows);
         }
-    });
-   
+    });   
 });
-
-// app.get('/api/books/:id', (req, res) => {
-//     const bookId = req.params.id;
-
-//     db.get('SELECT * FROM books WHERE id = ?', [bookId], (err, row) => {
-//         if (err) {
-//             console.error('Error fetching book:', err);
-//             res.status(500).json({ error: 'Internal Server Error' });
-//         } else if (!row) {
-//             res.status(404).json({ error: 'Book not found' });
-//         } else {
-//             res.json(row);
-//         }
-//     });
-// });
-
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
