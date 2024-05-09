@@ -49,7 +49,6 @@ async function scrapeBestSellers() {
                 resolve();
             });
         });
-
          
          console.log("Data saved to SQLite database.");
          
