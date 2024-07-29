@@ -1,0 +1,39 @@
+Based on your project, I'll create a Dockerfile and docker-compose file that uses the official Node.js image as the base, which is lightweight and well-maintained.
+
+Here's a draft of the Dockerfile:
+```
+# Use the official Node.js image as the base
+FROM node:18-alpine
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the package*.json files to the working directory
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the application code to the working directory
+COPY . .
+
+# Expose the port for the Express server
+EXPOSE 3000
+
+# Run the command to start the Express server
+CMD ["npm", "start"]
+```
+And here's a draft of the docker-compose file:
+```
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+```
+These files assume that your Express server listens on port 3000, which is the default port. If you're using a different port, please let me know.
+
+Please review these drafts and let me know if you'd like me to make any changes before I finalize the files.
