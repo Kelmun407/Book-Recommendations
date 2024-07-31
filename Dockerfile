@@ -1,7 +1,3 @@
-official Node.js image as the base, which is lightweight and well-maintained.
-
-Draft of the Dockerfile:
-```
 # Use the official Node.js image as the base
 FROM node:18-alpine
 
@@ -22,16 +18,3 @@ EXPOSE 3000
 
 # Run the command to start the Express server
 CMD ["npm", "start"]
-```
-And here's a draft of the docker-compose file:
-```
-version: '3'
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-```
-
