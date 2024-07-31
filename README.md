@@ -12,17 +12,20 @@ cd best-sellers-book-recommendation
 Install dependencies using npm:
 npm install
 
-Start the server:
-node books_server.js
+Start the servers:
+npm run start
 
-Open the splash page in your web browser:
-http://localhost:3000/splashPage.html
+      "dependencies":
+      "cors": "^2.8.5",
+      "express": "^4.19.2",
+      "fetch": "^1.1.0",
+      "mocha": "^10.4.0",
+      "nodemon": "^3.1.4",
+      "react": "^18.3.1",
+      "selenium-webdriver": "^4.20.0",
+      "sqlite3": "^5.1.7"
 
-Dependencies
-cors: ^2.8.5
-express: ^4.19.2
-fetch: ^1.1.0
-selenium-webdriver: ^4.20.0
+
 
 Usage
 Splash Page: Open the splashPage.html file in your web browser to start exploring book recommendations.
