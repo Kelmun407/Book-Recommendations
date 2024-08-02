@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Run the command to start the Express server
-CMD ["start"]
+CMD ["npm" "run" "start"]
