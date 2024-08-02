@@ -11,7 +11,7 @@
   },
 
   "scripts":{
-    "start": "splashPage.html , nodemon Books_server.js"
+    "start": "splashPage.html && nodemon Books_server.js"
     
   }
 }
