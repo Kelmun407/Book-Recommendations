@@ -15,6 +15,7 @@ COPY . .
 
 # Expose the port for the Express server
 EXPOSE 3000
+EXPOSE 4000
 
 # Run the command to start the Express server
-CMD ["npm" "run" "start"]
+CMD ["start"]
