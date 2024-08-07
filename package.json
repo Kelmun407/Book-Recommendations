@@ -13,6 +13,7 @@
     "concurrently": "^8.2.2"
   },
   "scripts": {
-    "start": "concurrently \"node splashPage.js\" \"node Books_server.js\""
+    "start": "node splashPage.js",
+    "dev": "node Books_server.js"
   }
 }
