@@ -1,3 +1,0 @@
-Yesterday and today I spent the day cleaning the data i scraped and trying to setup an ETL process with 
-Sql Server but i was having alot of issues. Ive decided to try using Talend for this task instead and 
-see if i have better success there.

@@ -1,3 +1,0 @@
-Today ive hit a road block trying to connect to my db using express endpoint. 
-I am currently unable to see any info on the front page although everything is seemingly
-set up correctly. I will keep on researching to find a possible solution.
