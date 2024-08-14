@@ -13,7 +13,7 @@
     "concurrently": "^8.2.2"
   },
   "scripts": {
-    "start": "node packages/frontend/splashPage.js",
+    "start": "node packages/frontend/routes.js",
     "dev": "node packages/backend/Books_server.js"
   }
 }
