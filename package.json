@@ -3,8 +3,11 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "fetch": "^1.1.0",
+    "fs": "^0.0.1-security",
+    "json2csv": "^6.0.0-alpha.2",
     "mocha": "^10.4.0",
     "nodemon": "^3.1.4",
+    "path": "^0.12.7",
     "react": "^18.3.1",
     "selenium-webdriver": "^4.20.0",
     "sqlite3": "^5.1.7"
@@ -17,4 +20,3 @@
     "dev": "node packages/backend/Books_server.js"
   }
 }
-
